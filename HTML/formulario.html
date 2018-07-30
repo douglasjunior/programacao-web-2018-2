@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Meu primeiro formulário</title>
+</head>
+
+<body>
+    <h1>Meu Formulário</h1>
+
+    <form method="POST" 
+                action="mailto:douglas.junior@grupointegrado.br">
+        <fieldset>
+            <legend>Descrição do formulário</legend>
+            <label>Nome:</label>
+            <br />
+            <input type="text" name="primeiroNome" />
+            <br />
+            <br />
+            <label>Senha:</label>
+            <br />
+            <input type="password" name="senha" />
+            <br />
+            <br />
+            <label>Masculino</label>
+            <input type="radio" name="sexo" value="masculino" />
+            <br />
+            <label>Feminino</label>
+            <input type="radio" name="sexo" value="feminino" />
+            <br />
+            <br />
+            <label>Gostaria de aprender:</label>
+            <br />
+            <label for="check-html">HTML</label>
+            <input id="check-html" type="checkbox" name="assunto" value="html" />
+            <br />
+            <label for="check-css">CSS</label>
+            <input id="check-css" type="checkbox" name="assunto" value="css" />
+            <br />
+            <br />
+            <button type="submit">Enviar</button>
+            <button type="reset">Limpar</button>
+        </fieldset>
+    </form>
+</body>
+
+</html>
