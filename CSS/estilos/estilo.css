@@ -5,16 +5,18 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
+    background-size: cover;
 
-    /* 
-    background: black 
-        url("../imagens/paisagem.jpg")
-        no-repeat
-        fixed
-        20px 30px; 
-        */
+        /* 
+background: black 
+            url("../imagens/paisagem.jpg")
+    no-repeat
+    fixed
+    20px 30px; 
+    */
 }
 
 h1 {
     color: white;
+    background-color: rgba(0, 0, 0, 0.322);
 }
