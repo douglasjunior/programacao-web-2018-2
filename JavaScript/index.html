@@ -34,7 +34,7 @@
             preço,
         })
     </script> -->
-    <script>
+    <!-- <script>
         var boleano = true;
         var numerico = 22;
         var numerico_flutuante = 13.56;
@@ -46,14 +46,44 @@
         document.write("<br>O tipo de texto é: " + typeof texto);
         document.write("<br>O tipo de data é: " + typeof data);
         document.write("<br>Isso é uma data?: " + (data instanceof Date)); 
+    </script> -->
 
-        try {
-            var teste;
-            teste.trim();
-        } catch(error) {
-            console.error(error)
+    <!-- <script>
+        var numero = 20;
+
+        var mensagem = 
+            numero > 10 ? 'Maior do que 10' : 'Não é maior do que 10'
+
+        document.write(mensagem)
+    </script> -->
+
+    <!-- <script>
+        window.open('http://google.com', '',
+            'width=500, height=100, menubar=no')
+    </script> -->
+
+    <!-- <script>
+        window.alert('Bem-vindo ao meu site!');
+        alert('Seja bem-vindo!');
+    </script> -->
+
+    <!-- <script>
+        document.write(new Date())
+    </script> -->
+
+    <script>
+        function voltar() {
+            history.go(-1)
+        }
+        function exibirMensagem() {
+            alert('Clicou no botão')
         }
     </script>
+
+    <input type="button" value="Voltar"  onclick="voltar()" />
+    <br />
+    <input type="button" value="Clique aqui"  
+        onclick="exibirMensagem()" />
 </body>
 
 </html>
