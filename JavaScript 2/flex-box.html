@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Layout com Flexbox</title>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #conteudo {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            flex: auto;
+        }
+
+        #header {
+            height: 200px;
+            width: 100%;
+        }
+
+        .coluna-1 {
+            width: 300px
+        }
+
+        .coluna-2 {
+            flex: auto;
+        }
+
+        .coluna-3 {
+            width: 100px;
+        }
+
+        .cor-red {
+            background-color: red;
+        }
+
+        .cor-green {
+            background-color: green;
+        }
+
+        .cor-blue {
+            background-color: blue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+
+        <div id="header">
+            Cabeçalho
+        </div>
+
+        <div id="conteudo">
+
+            <div class="coluna-1 cor-red">
+                Coluna 1
+            </div>
+            <div class="coluna-2 cor-green">
+                Coluna 2
+            </div>
+            <div class="coluna-3 cor-blue">
+                Coluna 3
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

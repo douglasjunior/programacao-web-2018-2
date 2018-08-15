@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Aula JavaScript</title>
+
+    <script>
+        function exibirMensagem(mensagem) {
+            alert(mensagem)
+        }
+
+        // <h1>Cabeçalho 1</h1>
+        // <h2>Cabeçalho 2</h2>
+        // ...
+        // <h6>Cabeçalho 6</h6>
+        function exibirTitulos() {
+            var divConteudo = document.getElementById('conteudo')
+            var html = ""
+            for (var i = 1; i <= 6;i++) {
+                if (i === 4) {
+                    continue;
+                }
+                html += "<h" + i + ">Cabeçalho " + i + "</h" + i + ">";
+            }
+            divConteudo.innerHTML = html
+        }
+
+        var animais = ["Catioro", "Gato", "Tartaruga", "Rato"];
+
+        function exibirAnimais() {
+            var divConteudo = document.getElementById('conteudo')
+            var html = "<ul>"
+            for (var i in animais) {
+                var animal = animais[i]
+                html += "<li>" + animal + "</li>" 
+            }
+            html += "</ul>"
+            divConteudo.innerHTML = html
+        }
+    </script>
+</head>
+
+<!-- <body onload="exibirMensagem()"> -->
+<body>
+    <h1>Aula de JavaScript</h1>
+
+    <div id="conteudo">
+    </div>
+
+    <!-- <script>
+        var divConteudo = document.getElementById('conteudo');
+        divConteudo.innerText = 'Hoje estamos aprendendo sobre a posição do Script.'
+    </script> -->
+
+    <!-- <script>
+        var divConteudo = document.getElementById('conteudo')
+        var dataAtual = new Date()
+        var horaAtual = dataAtual.getHours()
+        if (horaAtual >= 18) {
+            divConteudo.innerText = 'Boa noite.'
+        } else if (horaAtual >= 12) {
+            divConteudo.innerText = 'Boa tarde.'
+        } else {
+            divConteudo.innerText = 'Bom dia.'
+        }
+    </script> -->
+
+    <!-- <script>
+        var divConteudo = document.getElementById('conteudo')
+        var resultado = confirm('Escolha uma opção.')
+        if (resultado)
+            divConteudo.innerText = 'Você clicou em Ok'
+        else
+            divConteudo.innerText = 'Você clicou em Cancelar'
+    </script> -->
+
+    <!-- <script>
+        var divConteudo = document.getElementById('conteudo')
+        var nome = prompt('Informe o seu nome')
+
+        // valores que são considerados falsos no JavaScript
+        // null
+        // undefined
+        // false
+        // 0
+        // ''
+
+        if (nome) {
+            divConteudo.textContent = 'Olá ' + nome + ', seja bem-vindo.'
+        } else {
+            divConteudo.textContent = 'Você não informou seu nome.'
+        }
+    </script> -->
+
+    <button onclick="exibirTitulos()">
+        Exibir Títulos
+    </button>
+    <br />
+    <button onclick="exibirAnimais()">
+        Exibir Animais
+    </button>
+</body>
+
+</html>
