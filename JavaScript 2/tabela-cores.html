@@ -5,24 +5,29 @@
     <meta charset="UTF-8">
     <title>Tabela de cores</title>
     <script>
-        var r = ['00', '33', '66', '99', 'cc', 'ff']
-        var g = ['00', '33', '66', '99', 'cc', 'ff']
-        var b = ['00', '33', '66', '99', 'cc', 'ff']
+        var red = new Array('00', '33', '66', '99', 'cc', 'ff')
+        var green = ['00', '33', '66', '99', 'cc', 'ff']
+        var blue = ['00', '33', '66', '99', 'cc', 'ff']
     </script>
 </head>
 
 <body>
-    <table>
+    <table border="1">
         <script>
-            for (var iR in r) {
-                for (var iG in g) {
+            for (var i = 0; i < red.length; i++) {
+                var r = red[i];
+                for (var j = 0; j < green.length; j++) {
+                    var g = green[j];
                     document.write('<tr>')
-                    for (var iB in b) {
-                        var cor = '#' + r[iR] + g[iG] + b[iB]
-                        var corTexto = '#' + r[5 - iR] + g[5 - iG] + b[5 - iB]
-                        document.write('<td style="background-color: ' + cor + '; color: ' + corTexto + '">')
-                        document.write(cor)
-                        document.write('</td>')
+                    for (var k = 0; k < blue.length; k++) {
+                        var b = blue[k];
+                        var color = "#" + r + g + b;
+                        var textColor = "#" + red[5 - i] + green[5 - j] + blue[5 - k];
+                        var openColumn =
+                            '<td style="background-color: ' + color
+                            + ';color: ' + textColor + '">';
+                        var closeColumn = "</td>";
+                        document.write(openColumn + color + closeColumn)
                     }
                     document.write('</tr>')
                 }

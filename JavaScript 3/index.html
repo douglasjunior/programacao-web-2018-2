@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Eventos com JavaScript</title>
+
+    <script>
+        function removerTitulo() {
+            document.getElementById('titulo').style = "opacity: 0"
+        }
+        function exibirTitulo() {
+            document.getElementById('titulo').style = "opacity: 1"
+        }
+    </script>
+</head>
+
+<body>
+    <h1 id="titulo" 
+    onmouseover="removerTitulo()" 
+    onmouseout="exibirTitulo()">
+        Aula de eventos em JavaScript
+    </h1>
+</body>
+
+</html>
