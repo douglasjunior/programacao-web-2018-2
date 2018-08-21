@@ -37,6 +37,7 @@
       var valorInformado = input.value;
       var emailValido = regex.test(valorInformado)
       var divEmailErro = document.getElementById(idDivErro)
+      
       if (!emailValido) {
         input.className = 'inputError'
         divEmailErro.textContent = 'Informe um e-mail válido'

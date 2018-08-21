@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Radio Button</title>
+  <script>
+    function enviarFormulario() {
+      var sexoSelecionado = document.cadastro.sexo.value;
+      if (sexoSelecionado === 'm') {
+        alert('Selecionou masculino');
+      } else if (sexoSelecionado === 'f') {
+        alert('Selecionou feminino');
+      } else {
+        alert('Selecione uma opção');
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <form name="cadastro">
+    <input type="radio" name="sexo" value="m" />
+    <label>Masculino</label>
+    <br/>
+    <input type="radio" name="sexo" value="f" />
+    <label>Feminino</label>
+    <br/>
+    <button onclick="enviarFormulario()" type="button">
+      Salvar
+    </button>
+  </form>
+</body>
+
+</html>

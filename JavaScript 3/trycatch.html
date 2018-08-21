@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tratamento de exceções</title>
+
+    <script>
+        function exibirMensagem() {
+            try {
+                aaaalert('Bem-vindo!')
+            } catch(exception) {
+                console.log('Exceção', exception)
+                alert('Um erro ocorreu');
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button onclick="exibirMensagem()">Exibir mensagem</button>
+</body>
+
+</html>
