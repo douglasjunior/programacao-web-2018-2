@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Obtendo Localização do Usuário</title>
+    <script>
+        function obterLocalizacao() {
+            var divLocalizacao = document.getElementById('localizacao');
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (posicao) {
+                        console.log(posicao)
+                        var latitude = posicao.coords.latitude
+                        var longitude = posicao.coords.longitude
+                        var precisao = posicao.coords.accuracy;
+                        divLocalizacao.innerHTML = 'Latitude: ' + latitude;
+                        divLocalizacao.innerHTML += '<br />';
+                        divLocalizacao.innerHTML += 'Longitude: ' + longitude;
+                        divLocalizacao.innerHTML += '<br />';
+                        divLocalizacao.innerHTML += 'Precisão: ' + precisao;
+                        divLocalizacao.innerHTML += '<br />';
+
+                        var linkGoogMaps = document.createElement('a');
+                        linkGoogMaps.href = 'https://www.google.com/maps/?q='
+                            + latitude
+                            + ','
+                            + longitude;
+                        linkGoogMaps.textContent = 'Abrir Google Maps';
+                        linkGoogMaps.target = '_blank';
+
+                        divLocalizacao.appendChild(linkGoogMaps);
+
+                        var frameGoogleMaps = document.createElement('iframe');
+                        frameGoogleMaps.src =
+                            'https://www.bing.com/maps/embed?h=600&w=800&lvl=18&cp='
+                            + latitude
+                            + '~'
+                            + longitude;
+                        frameGoogleMaps.width = 800;
+                        frameGoogleMaps.height = 600;
+
+                        divLocalizacao.appendChild(frameGoogleMaps);
+                    },
+                    function (erro) {
+                        console.error(erro)
+                        divLocalizacao.textContent = 'Não foi possível detectar sua localização.'
+                    },
+                    {
+                        enableHighAccuracy: true,
+                    }
+                );
+            } else {
+                divLocalizacao.textContent =
+                    'Seu navegador não possui suporte a localização.'
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Clique no botão para obter sua localização:</h1>
+    <br />
+    <button onclick="obterLocalizacao()">
+        Obter Localização
+    </button>
+    <div id="localizacao"></div>
+</body>
+
+</html>
