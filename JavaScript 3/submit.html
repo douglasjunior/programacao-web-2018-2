@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Submissão de formulário via JavaScript</title>
+  <script>
+    function validarSubmeter() {
+      var mensagem = document.contato.mensagem.value;
+      if (!mensagem) {
+        alert('Informe a mensagem.');
+        return;
+      }
+      document.contato.submit();
+    }
+  </script>
+</head>
+<body>
+  <form name="contato" action="mailto:douglas.junior@grupointegrado.br">
+    <input type="text" name="mensagem" 
+      placeholder="Digite sua mensagem..." />
+    <br/>
+    <button type="button" onclick="validarSubmeter()">
+      Enviar
+    </button>
+    <!-- <br/>
+    <input type="button" value="Enviar" /> -->
+  </form>
+</body>
+
+</html>

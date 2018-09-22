@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data da última visita</title>
+    <script>
+        function salvarDataVisita() {
+            var dataAtual = new Date();
+            var dataCodificada = escape(dataAtual.toLocaleDateString())
+            document.cookie = 'ultima_visita=' + dataCodificada
+        }
+        function lerDataVisita() {
+            if (document.cookie) {
+                var partes = document.cookie.split('=')
+                var dataVisita = partes[1]
+                var dataDecodificada = unescape(dataVisita)
+                alert('Sua última visita foi em ' + dataDecodificada)
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Bem-vindo à aula de JavaScript</h1>
+    <script>
+        lerDataVisita();
+        salvarDataVisita();
+    </script>
+</body>
+</html>

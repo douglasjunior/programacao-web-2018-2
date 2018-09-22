@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Trabalhando com Cookies</title>
+  <script>
+    function ler() {
+      var partes = document.cookie.split('=') // ['nome', 'Douglas%20Junior']
+      var valor = partes[1] // 'Douglas%20Junior'
+      var valorDecodificado = unescape(valor) // 'Douglas Junior'
+      alert('Seu nome é: ' + valorDecodificado)
+    }
+    function gravar() {
+      var nome = prompt('Informe o seu nome:') // 'Douglas Junior'
+      var nomeCodificado = escape(nome) // 'Douglas%20Junior'
+      document.cookie = 'nome=' + nomeCodificado // 'nome=Douglas%20Junior'
+      alert('Obrigado!')
+    }
+  </script>
+</head>
+
+<body>
+  <button onclick="ler()">Ler</button>
+  <br />
+  <button onclick="gravar()">Gravar</button>
+</body>
+
+</html>

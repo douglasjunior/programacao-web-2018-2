@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Alterando o Título via JavaScript</title>
+    <script>
+        // var contador = 0;
+        function mudarTitulo(novoTitulo) {
+            document.title = novoTitulo
+        }
+        // setInterval(function () {
+        //     contador++;
+        //     if (contador % 2 === 0) {
+        //         mudarTitulo(' ͏')
+        //     } else {
+        //         mudarTitulo('Qualquer coisa')
+        //     }
+        // }, 200);
+    </script>
+</head>
+
+<body>
+    <button onclick="mudarTitulo('Título 1')">Título 1</button>
+    <br />
+    <button onclick="mudarTitulo('Bem-vindo')">Bem-vindo</button>
+    <br />
+    <button onclick="mudarTitulo('Outro título')">Outro título</button>
+    <br />
+</body>
+
+</html>
