@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Enviando Requisições</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Formulário de Login</h1>
+        <!--http://localhost:8080/PrimeiroServlet/index.html (origem)-->
+        <!--http://localhost:8080/PrimeiroServlet/login      (destino)-->
+
+        <!-- <form action="/PrimeiroServlet/login" method="post"> caminho absoluto -->
+        <form action="login" method="post"> <!-- caminho relativo -->
+            <label>Usuário: </label>
+            <input name="usuario" type="text" value="" />
+            <br />
+            <label>Senha: </label>
+            <input name="senha" type="password" value="" />
+            <br />
+            <br />
+            <button type="reset">Limpar</button>
+            <button type="submit">Entrar</button>
+        </form>
+    </body>
+</html>
