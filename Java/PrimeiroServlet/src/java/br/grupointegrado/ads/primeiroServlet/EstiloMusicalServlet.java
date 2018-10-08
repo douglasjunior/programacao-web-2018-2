@@ -3,6 +3,7 @@ package br.grupointegrado.ads.primeiroServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,11 @@ public class EstiloMusicalServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("doGet: " + new Date());
+        
+//        resp.addHeader("Cache-Control", "max-age=31536000");
+//        resp.addHeader("Expires", "Thu, 26 Sep 2019 20:33:14 GMT");
+        
         resp.setContentType("text/html");
         PrintWriter conteudo = resp.getWriter();
 
