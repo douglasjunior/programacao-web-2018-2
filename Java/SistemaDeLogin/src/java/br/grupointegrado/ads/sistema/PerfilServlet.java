@@ -13,8 +13,9 @@ public class PerfilServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        Object usuarioLogado = session.getAttribute("usuario-logado");
         
+        Object usuarioLogado = session.getAttribute("usuario-logado");
+                
         if (usuarioLogado != null) {
             PrintWriter conteudo = resp.getWriter();
             
