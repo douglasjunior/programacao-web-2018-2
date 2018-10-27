@@ -1,3 +1,4 @@
+<%@page import="br.grupointegrado.ads.gerenciadorDeProdutos.utils.Formatter"%>
 <%@page import="br.grupointegrado.ads.gerenciadorDeProdutos.modelos.Produto"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -21,13 +22,46 @@
             <h1>Gerenciamento de Produtos</h1>
 
             <section>
-                <form>
-
+                <h2>Cadastro de produtos</h2>
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="produto-nome">Nome</label>
+                        <input type="text" class="form-control" 
+                               id="produto-nome" name="produto-nome" />
+                    </div>
+                    <div class="form-group">
+                        <label for="produto-descricao">Descrição</label>
+                        <textarea class="form-control" id="produto-descricao" 
+                                  name="produto-descricao" ></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="produto-preco">Preço</label>
+                            <input type="number" class="form-control" id="produto-preco" 
+                                   name="produto-preco" step="0.01" />
+                        </div>
+                        <div class="form-group col">
+                            <label for="produto-quantidade">Quantidade</label>
+                            <input type="number" class="form-control" id="produto-quantidade" 
+                                   name="produto-quantidade" step="1" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="produto-validade">Data de validade</label>
+                            <input type="date" class="form-control" id="produto-validade" 
+                                   name="produto-validade" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>
             </section>
 
+            <br /><br />
+
             <section>
-                <table class="table">
+                <h2>Listagem de produtos</h2>
+                <table class="table table-sm table-striped">
                     <tr>
                         <th>ID</th>
                         <th>Produto</th>
@@ -45,7 +79,7 @@
                         <td><%= produto.getDescricao()%></td>
                         <td><%= produto.getQuantidade()%></td>
                         <td><%= produto.getPreco()%></td>
-                        <td><%= produto.getDataValidade()%></td>
+                        <td><%= Formatter.dataParaString(produto.getDataValidade())%></td>
                     </tr>
                     <%
                         }

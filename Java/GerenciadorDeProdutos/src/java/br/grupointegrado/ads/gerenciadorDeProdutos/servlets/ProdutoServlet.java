@@ -35,4 +35,20 @@ public class ProdutoServlet extends HttpServlet {
         dispatcher.forward(req, resp);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        /**
+         * 1. Recuperar os parâmetros do formulário. <br />
+         * 2. Criar um objeto Produto. <br />
+         * 3. Salvar o Produto no banco de dados. <br />
+         * 4. Exibir a página de listagem atualizada.
+         */
+        Produto produto = ProdutoDao.getProdutoByRequest(req);
+        
+        ProdutoDao dao = new ProdutoDao();
+        dao.inserir(produto);
+        
+        doGet(req, resp);
+    }
+
 }

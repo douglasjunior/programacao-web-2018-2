@@ -1,14 +1,18 @@
 package br.grupointegrado.ads.gerenciadorDeProdutos.modelos;
 
+import br.grupointegrado.ads.gerenciadorDeProdutos.utils.Formatter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 public class ProdutoDao {
 
     private static List<Produto> produtos = new ArrayList<>();
     private static long sequenciaIds = 1;
-    
+
     static {
         for (int i = 0; i < 10; i++) {
             Produto p = new Produto();
@@ -68,6 +72,16 @@ public class ProdutoDao {
             }
         }
         return produtosEncontrados;
+    }
+
+    public static Produto getProdutoByRequest(HttpServletRequest req) {
+        Produto produto = new Produto();
+        produto.setNome(req.getParameter("produto-nome"));
+        produto.setDescricao(req.getParameter("produto-descricao"));
+        produto.setPreco(Formatter.stringParaDouble(req.getParameter("produto-preco")));
+        produto.setQuantidade(Formatter.stringParaInt(req.getParameter("produto-quantidade")));
+        produto.setDataValidade(Formatter.stringParaData(req.getParameter("produto-validade")));
+        return produto;
     }
 
 }

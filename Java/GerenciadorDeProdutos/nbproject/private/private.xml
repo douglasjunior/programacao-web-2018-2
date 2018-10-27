@@ -3,7 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/projetos/Aula/programacao-web-2018-2/Java/GerenciadorDeProdutos/src/java/br/grupointegrado/ads/gerenciadorDeProdutos/modelos/Produto.java</file>
             <file>file:/C:/projetos/Aula/programacao-web-2018-2/Java/GerenciadorDeProdutos/src/java/br/grupointegrado/ads/gerenciadorDeProdutos/servlets/ProdutoServlet.java</file>
+            <file>file:/C:/projetos/Aula/programacao-web-2018-2/Java/GerenciadorDeProdutos/src/java/br/grupointegrado/ads/gerenciadorDeProdutos/utils/Formatter.java</file>
             <file>file:/C:/projetos/Aula/programacao-web-2018-2/Java/GerenciadorDeProdutos/src/java/br/grupointegrado/ads/gerenciadorDeProdutos/modelos/ProdutoDao.java</file>
             <file>file:/C:/projetos/Aula/programacao-web-2018-2/Java/GerenciadorDeProdutos/web/WEB-INF/paginas/produtos.jsp</file>
         </group>
