@@ -1,8 +1,6 @@
 package br.grupointegrado.ads.gerenciadorDeProdutos.modelos;
 
 import br.grupointegrado.ads.gerenciadorDeProdutos.utils.Formatter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

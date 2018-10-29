@@ -44,10 +44,10 @@ public class ProdutoServlet extends HttpServlet {
          * 4. Exibir a página de listagem atualizada.
          */
         Produto produto = ProdutoDao.getProdutoByRequest(req);
-        
+
         ProdutoDao dao = new ProdutoDao();
         dao.inserir(produto);
-        
+
         doGet(req, resp);
     }
 
