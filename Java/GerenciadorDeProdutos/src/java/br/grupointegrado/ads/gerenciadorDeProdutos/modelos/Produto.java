@@ -1,5 +1,6 @@
 package br.grupointegrado.ads.gerenciadorDeProdutos.modelos;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Produto {
@@ -10,6 +11,12 @@ public class Produto {
     private double preco;
     private int quantidade;
     private Date dataValidade;
+
+    public Produto() {
+        nome = "";
+        descricao = "";
+        dataValidade = new Date();
+    }
 
     public long getId() {
         return id;
@@ -53,6 +60,15 @@ public class Produto {
 
     public Date getDataValidade() {
         return dataValidade;
+    }
+
+    public String getDataValidadeString() {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            return format.format(this.dataValidade);
+        } catch (Exception ex) {
+            return "";
+        }
     }
 
     public void setDataValidade(Date dataValidade) {

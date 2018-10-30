@@ -2,7 +2,6 @@ package br.grupointegrado.ads.gerenciadorDeProdutos.modelos;
 
 import br.grupointegrado.ads.gerenciadorDeProdutos.utils.Formatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 

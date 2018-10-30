@@ -48,16 +48,16 @@ public class ProdutoServlet extends HttpServlet {
          * 4. Exibir a página de listagem atualizada.
          */
         String mensagemErro = validaCadastro(req);
+        Produto produto = ProdutoDao.getProdutoByRequest(req);
 
         if (mensagemErro == null) {
             // Os dados do produto são válidos
-            Produto produto = ProdutoDao.getProdutoByRequest(req);
-
             ProdutoDao dao = new ProdutoDao();
             dao.inserir(produto);
         } else {
             // Os dados do produto são inválidos
             req.setAttribute("mensagem-erro", mensagemErro);
+            req.setAttribute("produto", produto);
         }
 
         doGet(req, resp);
@@ -76,17 +76,17 @@ public class ProdutoServlet extends HttpServlet {
                 req.getParameter("produto-quantidade"), 0, Integer.MAX_VALUE)) {
             return "A quantidade do produto é obrigatória.";
         }
-        
+
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         Date dataMinima = calendar.getTime();
-        
+
         calendar.add(Calendar.YEAR, 10);
         Date dataMaxima = calendar.getTime();
-        
+
         if (!Validations.validaData(
                 req.getParameter("produto-validade"), dataMinima, dataMaxima)) {
             return "Informe a data de validade do produto.";
