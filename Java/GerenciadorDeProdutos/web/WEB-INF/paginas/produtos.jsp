@@ -4,6 +4,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
+    Object mensagemErro = request.getAttribute("mensagem-erro");
     List<Produto> produtos = (List<Produto>) request.getAttribute("produtos");
 %>
 
@@ -23,6 +24,17 @@
 
             <section>
                 <h2>Cadastro de produtos</h2>
+
+                <%
+                    if (mensagemErro != null) {
+                %>
+                <div class="alert alert-danger" role="alert">
+                    <%= mensagemErro %>
+                </div>
+                <%
+                    }
+                %>
+
                 <form method="POST">
                     <div class="form-group">
                         <label for="produto-nome">Nome</label>
@@ -70,8 +82,7 @@
                         <th>Preço</th>
                         <th>Validade</th>
                     </tr>
-                    <%
-                        for (Produto produto : produtos) {
+                    <%                        for (Produto produto : produtos) {
                     %>
                     <tr>
                         <td><%= produto.getId()%></td>

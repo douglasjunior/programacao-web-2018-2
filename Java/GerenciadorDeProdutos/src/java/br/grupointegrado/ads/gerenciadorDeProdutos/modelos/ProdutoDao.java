@@ -11,18 +11,18 @@ public class ProdutoDao {
     private static List<Produto> produtos = new ArrayList<>();
     private static long sequenciaIds = 1;
 
-    static {
-        for (int i = 0; i < 10; i++) {
-            Produto p = new Produto();
-            p.setId(sequenciaIds++);
-            p.setNome("produto " + i);
-            p.setDescricao("produto descrição " + i);
-            p.setPreco(10.5 * i);
-            p.setQuantidade(8 * i);
-            p.setDataValidade(new Date());
-            produtos.add(p);
-        }
-    }
+//    static {
+//        for (int i = 0; i < 10; i++) {
+//            Produto p = new Produto();
+//            p.setId(sequenciaIds++);
+//            p.setNome("produto " + i);
+//            p.setDescricao("produto descrição " + i);
+//            p.setPreco(10.5 * i);
+//            p.setQuantidade(8 * i);
+//            p.setDataValidade(new Date());
+//            produtos.add(p);
+//        }
+//    }
 
     public ProdutoDao() {
     }

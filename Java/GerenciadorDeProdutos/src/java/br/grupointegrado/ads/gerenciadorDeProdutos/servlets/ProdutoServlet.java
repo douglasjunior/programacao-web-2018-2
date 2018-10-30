@@ -2,7 +2,11 @@ package br.grupointegrado.ads.gerenciadorDeProdutos.servlets;
 
 import br.grupointegrado.ads.gerenciadorDeProdutos.modelos.Produto;
 import br.grupointegrado.ads.gerenciadorDeProdutos.modelos.ProdutoDao;
+import br.grupointegrado.ads.gerenciadorDeProdutos.utils.Validations;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -43,12 +47,51 @@ public class ProdutoServlet extends HttpServlet {
          * 3. Salvar o Produto no banco de dados. <br />
          * 4. Exibir a página de listagem atualizada.
          */
-        Produto produto = ProdutoDao.getProdutoByRequest(req);
+        String mensagemErro = validaCadastro(req);
 
-        ProdutoDao dao = new ProdutoDao();
-        dao.inserir(produto);
+        if (mensagemErro == null) {
+            // Os dados do produto são válidos
+            Produto produto = ProdutoDao.getProdutoByRequest(req);
+
+            ProdutoDao dao = new ProdutoDao();
+            dao.inserir(produto);
+        } else {
+            // Os dados do produto são inválidos
+            req.setAttribute("mensagem-erro", mensagemErro);
+        }
 
         doGet(req, resp);
+    }
+
+    // teste vitor
+    private String validaCadastro(HttpServletRequest req) {
+        if (!Validations.validaString(req.getParameter("produto-nome"), 5)) {
+            return "O nome do produto deve possuir ao menos 5 caracteres.";
+        }
+        if (!Validations.validaDouble(
+                req.getParameter("produto-preco"), 0.01, Double.MAX_VALUE)) {
+            return "O preço do produto é obrigatório.";
+        }
+        if (!Validations.validaLong(
+                req.getParameter("produto-quantidade"), 0, Integer.MAX_VALUE)) {
+            return "A quantidade do produto é obrigatória.";
+        }
+        
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date dataMinima = calendar.getTime();
+        
+        calendar.add(Calendar.YEAR, 10);
+        Date dataMaxima = calendar.getTime();
+        
+        if (!Validations.validaData(
+                req.getParameter("produto-validade"), dataMinima, dataMaxima)) {
+            return "Informe a data de validade do produto.";
+        }
+        return null;
     }
 
 }
