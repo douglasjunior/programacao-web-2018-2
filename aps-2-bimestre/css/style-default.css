@@ -1,0 +1,11 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.conteudo {
+    margin: auto;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}

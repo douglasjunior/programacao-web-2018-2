@@ -1,0 +1,14 @@
+.veiculo-imagem {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.veiculo-valor {
+    color: white;
+    background-color: blueviolet;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 8px;
+    padding-left: 32px;
+}

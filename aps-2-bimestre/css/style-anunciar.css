@@ -1,0 +1,7 @@
+/* Altera o texto do "append" do input file */
+.custom-file-input ~ .custom-file-label::after {
+    content: "jpg ou png";
+}
+.custom-file-label {
+    overflow: hidden;
+}

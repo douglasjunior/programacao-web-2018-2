@@ -1,0 +1,63 @@
+.tabela-veiculos-linha {
+    cursor: pointer;
+}
+
+.tv-col-imagem {
+    width: 256px;
+}
+
+.tv-col-imagem img {
+    width: 256px;
+    height: 191px;
+    object-fit: contain;
+}
+
+.menu-esquerdo {
+    width: 250px;
+}
+
+.informacoes-anuncio {
+    /* line-height: 1.5em; */
+}
+
+.descricao-anuncio {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.data-hora-anuncio {
+    font-size: 14px;
+}
+
+.valor-anuncio {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+@media only screen and (max-width: 1359px) {
+    .tv-col-imagem {
+        width: 205px;
+    }
+
+    .tv-col-imagem img {
+        width: 205px;
+        height: 153px;
+    }
+}
+
+@media only screen and (max-width: 799px) {
+    .tv-col-imagem {
+        width: 153px;
+    }
+
+    .tv-col-imagem img {
+        width: 153px;
+        height: 114px;
+    }
+}
+
+@media only screen and (max-width: 660px) {
+    .menu-esquerdo {
+        width: 100%;
+    }
+}
