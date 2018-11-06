@@ -30,9 +30,9 @@
         <script>
             function validaCadastro(event) {
                 var nomeInput = document['form-produto']['produto-nome'];
-                var preco = document['form-produto']['produto-preco'].value;
-                var quantidade = document['form-produto']['produto-quantidade'].value;
-                var validade = document['form-produto']['produto-validade'].value;
+                var precoInput = document['form-produto']['produto-preco'];
+                var quantidadeInput = document['form-produto']['produto-quantidade'];
+                var validadeInput = document['form-produto']['produto-validade'];
 
                 var formValido = true;
 
@@ -45,21 +45,43 @@
                     nomeInput.classList.add('is-valid');
                 }
 
-                if (!validaNumber(preco, 0.01, Number.MAX_VALUE)) {
+                if (!validaNumber(precoInput.value, 0.01, Number.MAX_VALUE)) {
                     formValido = false;
+                    precoInput.classList.add('is-invalid');
+                    precoInput.classList.remove('is-valid');
+                } else {
+                    precoInput.classList.remove('is-invalid');
+                    precoInput.classList.add('is-valid');
                 }
 
-                if (!validaNumber(quantidade, 0, Number.MAX_VALUE)) {
+                if (!validaNumber(quantidadeInput.value, 0, Number.MAX_VALUE)) {
                     formValido = false;
+                    quantidadeInput.classList.add('is-invalid');
+                    quantidadeInput.classList.remove('is-valid');
+                } else {
+                    quantidadeInput.classList.remove('is-invalid');
+                    quantidadeInput.classList.add('is-valid');
                 }
 
                 var dataMinima = moment().startOf('day');
                 var dataMaxima = moment().startOf('day').add('year', 10);
-                if (!validaData(validade, dataMinima, dataMaxima)) {
+                if (!validaData(validadeInput.value, dataMinima, dataMaxima)) {
                     formValido = false;
+                    validadeInput.classList.add('is-invalid');
+                    validadeInput.classList.remove('is-valid');
+                } else {
+                    validadeInput.classList.remove('is-invalid');
+                    validadeInput.classList.add('is-valid');
                 }
 
                 return formValido;
+            }
+
+            function excluirProduto(produtoId) {
+                var resultado = confirm("Deseja excluir o produto " + produtoId + "?");
+                if (resultado) {
+                    alert("Excluindo produto...");
+                }
             }
         </script>
     </head>
@@ -81,6 +103,10 @@
                 %>
 
                 <form name="form-produto" method="POST" onsubmit="return validaCadastro();">
+                    <input type="hidden"
+                           name="produto-id"
+                           value="<%= produto.getId()%>" />
+
                     <div class="form-group">
                         <label for="produto-nome">Nome</label>
                         <input type="text" class="form-control" 
@@ -102,12 +128,18 @@
                             <input type="number" class="form-control" id="produto-preco" 
                                    name="produto-preco" step="0.01"
                                    value="<%= produto.getPreco()%>"/>
+                            <div class="invalid-feedback">
+                                Informe o preço do produto.                            
+                            </div>
                         </div>
                         <div class="form-group col">
                             <label for="produto-quantidade">Quantidade</label>
                             <input type="number" class="form-control" id="produto-quantidade" 
                                    name="produto-quantidade" step="1"
                                    value="<%= produto.getQuantidade()%>" />
+                            <div class="invalid-feedback">
+                                Informe um valor positivo para a quantidade.                            
+                            </div>
                         </div>
                     </div>
                     <div class="form-row">
@@ -116,6 +148,9 @@
                             <input type="date" class="form-control" id="produto-validade" 
                                    name="produto-validade"
                                    value="<%= produto.getDataValidadeString()%>" />
+                            <div class="invalid-feedback">
+                                Informe uma data igual ou maior do que a atual.                            
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Salvar</button>
@@ -134,6 +169,7 @@
                         <th>Quantidade</th>
                         <th>Preço</th>
                         <th>Validade</th>
+                        <th>Ações</th>
                     </tr>
                     <%
                         for (Produto p : produtos) {
@@ -145,6 +181,19 @@
                         <td><%= p.getQuantidade()%></td>
                         <td><%= p.getPreco()%></td>
                         <td><%= Formatter.dataParaString(p.getDataValidade())%></td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="produtos?produto=<%= p.getId()%>"
+                                   class="btn">
+                                    Editar
+                                </a>
+                                <button onclick="excluirProduto(<%= p.getId()%>)"
+                                        type="button" 
+                                        class="btn btn-danger">
+                                    Excluir
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                     <%
                         }

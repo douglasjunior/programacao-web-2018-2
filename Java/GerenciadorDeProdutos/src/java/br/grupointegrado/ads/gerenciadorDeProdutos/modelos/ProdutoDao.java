@@ -73,6 +73,7 @@ public class ProdutoDao {
 
     public static Produto getProdutoByRequest(HttpServletRequest req) {
         Produto produto = new Produto();
+        produto.setId(Formatter.stringParaLong(req.getParameter("produto-id")));
         produto.setNome(req.getParameter("produto-nome"));
         produto.setDescricao(req.getParameter("produto-descricao"));
         produto.setPreco(Formatter.stringParaDouble(req.getParameter("produto-preco")));
