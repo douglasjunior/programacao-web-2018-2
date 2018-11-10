@@ -80,7 +80,7 @@
             function excluirProduto(produtoId) {
                 var resultado = confirm("Deseja excluir o produto " + produtoId + "?");
                 if (resultado) {
-                    alert("Excluindo produto...");
+                    window.location = "produtos?excluirProduto=" + produtoId;
                 }
             }
         </script>
@@ -161,6 +161,21 @@
 
             <section>
                 <h2>Listagem de produtos</h2>
+
+                <form class="mb-3">
+                    <div class="input-group">
+                        <input type="text" 
+                               name="buscar-produto"
+                               class="form-control" 
+                               placeholder="Buscar por nome ou descrição..." >
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary">
+                                Buscar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
                 <table class="table table-sm table-striped">
                     <tr>
                         <th>ID</th>
