@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 
 /**
  * URL: /produtos
@@ -104,51 +105,61 @@ public class ProdutoServlet extends HttpServlet {
          * 3. Salvar o Produto no banco de dados. <br />
          * 4. Exibir a página de listagem atualizada.
          */
-        String mensagemErro = validaCadastro(req);
-        Produto produto = ProdutoDao.getProdutoByRequest(req);
 
-        if (mensagemErro == null) {
-            Connection conexao = (Connection) req.getAttribute("conexao");
-            // Os dados do produto são válidos
-            ProdutoDao dao = new ProdutoDao(conexao);
+        try {
+            Produto produto = ProdutoDao.getProdutoByRequest(req);
+            String mensagemErro = validaCadastro(produto);
 
-            try {
-                if (produto.getId() > 0) {
-                    // Se o produto já possui ID, então deve atualizar
-                    dao.atualizar(produto);
-                } else {
-                    // Se não, inserir novo produto
-                    dao.inserir(produto);
+            if (mensagemErro == null) {
+                Connection conexao = (Connection) req.getAttribute("conexao");
+                // Os dados do produto são válidos
+                ProdutoDao dao = new ProdutoDao(conexao);
+
+                try {
+                    if (produto.getId() > 0) {
+                        // Se o produto já possui ID, então deve atualizar
+                        dao.atualizar(produto);
+                    } else {
+                        // Se não, inserir novo produto
+                        dao.inserir(produto);
+                    }
+                    resp.sendRedirect("/gerenciador/produtos");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    req.setAttribute("mensagem-erro", "Não foi possível salvar o produto.");
+                    req.setAttribute("produto", produto);
+
+                    listarProdutos(req, resp);
                 }
-                resp.sendRedirect("/gerenciador/produtos");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                req.setAttribute("mensagem-erro", "Não foi possível salvar o produto.");
+            } else {
+                // Os dados do produto são inválidos
+                req.setAttribute("mensagem-erro", mensagemErro);
                 req.setAttribute("produto", produto);
 
                 listarProdutos(req, resp);
             }
-        } else {
-            // Os dados do produto são inválidos
-            req.setAttribute("mensagem-erro", mensagemErro);
-            req.setAttribute("produto", produto);
+        } catch (FileUploadException ex) {
+            ex.printStackTrace();
+            req.setAttribute("mensagem-erro", "Não foi possível salvar a imagem do produto.");
 
             listarProdutos(req, resp);
         }
+
     }
 
     // teste vitor
-    private String validaCadastro(HttpServletRequest req) {
-        if (!Validations.validaString(req.getParameter("produto-nome"), 5)) {
+    private String validaCadastro(Produto produto) {
+        if (!Validations.validaString(produto.getNome(), 5)) {
             return "O nome do produto deve possuir ao menos 5 caracteres.";
         }
-        if (!Validations.validaDouble(
-                req.getParameter("produto-preco"), 0.01, Double.MAX_VALUE)) {
+        if (!Validations.validaDouble(produto.getPreco(), 0.01, Double.MAX_VALUE)) {
             return "O preço do produto é obrigatório.";
         }
-        if (!Validations.validaLong(
-                req.getParameter("produto-quantidade"), 0, Integer.MAX_VALUE)) {
+        if (!Validations.validaLong(produto.getQuantidade(), 0, Integer.MAX_VALUE)) {
             return "A quantidade do produto é obrigatória.";
+        }
+        if (produto.getId() == 0 && produto.getImagem() == null) {
+            return "A imagem do produto é obrigatória.";
         }
 
         Calendar calendar = GregorianCalendar.getInstance();
@@ -161,8 +172,7 @@ public class ProdutoServlet extends HttpServlet {
         calendar.add(Calendar.YEAR, 10);
         Date dataMaxima = calendar.getTime();
 
-        if (!Validations.validaData(
-                req.getParameter("produto-validade"), dataMinima, dataMaxima)) {
+        if (!Validations.validaData(produto.getDataValidade(), dataMinima, dataMaxima)) {
             return "Informe a data de validade do produto.";
         }
         return null;

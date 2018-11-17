@@ -26,9 +26,17 @@
         <servlet-name>ProdutoServlet</servlet-name>
         <servlet-class>br.grupointegrado.ads.gerenciadorDeProdutos.servlets.ProdutoServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ImagemServlet</servlet-name>
+        <servlet-class>br.grupointegrado.ads.gerenciadorDeProdutos.servlets.ImagemServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProdutoServlet</servlet-name>
         <url-pattern>/produtos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ImagemServlet</servlet-name>
+        <url-pattern>/imagem</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

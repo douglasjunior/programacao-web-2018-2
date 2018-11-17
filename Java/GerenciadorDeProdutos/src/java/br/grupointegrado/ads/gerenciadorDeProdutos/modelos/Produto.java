@@ -7,12 +7,13 @@ public class Produto {
 
     /*
     CREATE TABLE `produtos` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `nome` VARCHAR(50) NOT NULL,
-    `descricao` VARCHAR(255) NULL,
-    `preco` DECIMAL(10,2) NOT NULL DEFAULT 0,
-    `quantidade` INT NOT NULL DEFAULT 0,
-    `validade` DATE NOT NULL,
+    `id` bigint(20) NOT NULL AUTO_INCREMENT,
+    `nome` varchar(50) NOT NULL,
+    `descricao` varchar(255) DEFAULT NULL,
+    `preco` decimal(10,2) NOT NULL DEFAULT '0.00',
+    `quantidade` int(11) NOT NULL DEFAULT '0',
+    `validade` date NOT NULL,
+    `imagem` varchar(255) NOT NULL,
     PRIMARY KEY (`id`));
      */
     private long id;
@@ -21,6 +22,7 @@ public class Produto {
     private double preco;
     private int quantidade;
     private Date dataValidade;
+    private String imagem;
 
     public Produto() {
         nome = "";
@@ -83,6 +85,14 @@ public class Produto {
 
     public void setDataValidade(Date dataValidade) {
         this.dataValidade = dataValidade;
+    }
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
     }
 
     @Override

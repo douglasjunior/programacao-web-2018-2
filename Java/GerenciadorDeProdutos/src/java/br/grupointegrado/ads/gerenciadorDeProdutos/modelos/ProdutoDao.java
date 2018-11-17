@@ -1,13 +1,17 @@
 package br.grupointegrado.ads.gerenciadorDeProdutos.modelos;
 
 import br.grupointegrado.ads.gerenciadorDeProdutos.utils.Formatter;
+import br.grupointegrado.ads.gerenciadorDeProdutos.utils.ServletUtil;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 
 public class ProdutoDao {
 
@@ -21,17 +25,17 @@ public class ProdutoDao {
         // SQL: INSERT INTO PRODUTOS ...
 
         String sql = "INSERT INTO produtos "
-                + " (nome, descricao, preco, quantidade, validade) "
-                + " VALUES (?, ?, ?, ?, ?) ";
+                + " (nome, descricao, preco, quantidade, validade, imagem) "
+                + " VALUES (?, ?, ?, ?, ?, ?) ";
 
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setString(1, produto.getNome());
         statement.setString(2, produto.getDescricao());
         statement.setDouble(3, produto.getPreco());
         statement.setInt(4, produto.getQuantidade());
-
         long timeValidade = produto.getDataValidade().getTime();
         statement.setDate(5, new java.sql.Date(timeValidade));
+        statement.setString(6, produto.getImagem());
 
         statement.execute();
     }
@@ -65,22 +69,39 @@ public class ProdutoDao {
 
     public void atualizar(Produto produto) throws SQLException {
         // SQL: UPDATE PRODUTOS ...
-        String sql = "UPDATE produtos SET "
-                + " nome = ?, descricao = ?, preco = ?, quantidade = ?, validade = ? "
-                + " WHERE id = ? ";
+        if (produto.getImagem() != null) {
+            // Altera a imagem
+            String sql = "UPDATE produtos SET "
+                    + " nome = ?, descricao = ?, preco = ?, quantidade = ?, validade = ?, imagem = ? "
+                    + " WHERE id = ? ";
 
-        PreparedStatement statement = conexao.prepareStatement(sql);
-        statement.setString(1, produto.getNome());
-        statement.setString(2, produto.getDescricao());
-        statement.setDouble(3, produto.getPreco());
-        statement.setInt(4, produto.getQuantidade());
+            PreparedStatement statement = conexao.prepareStatement(sql);
+            statement.setString(1, produto.getNome());
+            statement.setString(2, produto.getDescricao());
+            statement.setDouble(3, produto.getPreco());
+            statement.setInt(4, produto.getQuantidade());
+            long timeValidade = produto.getDataValidade().getTime();
+            statement.setDate(5, new java.sql.Date(timeValidade));
+            statement.setString(6, produto.getImagem());
+            statement.setLong(7, produto.getId());
+            statement.execute();
+        } else {
+            // Não altera a imagem
+            String sql = "UPDATE produtos SET "
+                    + " nome = ?, descricao = ?, preco = ?, quantidade = ?, validade = ? "
+                    + " WHERE id = ? ";
 
-        long timeValidade = produto.getDataValidade().getTime();
-        statement.setDate(5, new java.sql.Date(timeValidade));
+            PreparedStatement statement = conexao.prepareStatement(sql);
+            statement.setString(1, produto.getNome());
+            statement.setString(2, produto.getDescricao());
+            statement.setDouble(3, produto.getPreco());
+            statement.setInt(4, produto.getQuantidade());
+            long timeValidade = produto.getDataValidade().getTime();
+            statement.setDate(5, new java.sql.Date(timeValidade));
+            statement.setLong(6, produto.getId());
+            statement.execute();
+        }
 
-        statement.setLong(6, produto.getId());
-
-        statement.execute();
     }
 
     public List<Produto> buscaTodos(String termoBusca) throws SQLException {
@@ -118,17 +139,35 @@ public class ProdutoDao {
         prod.setPreco(result.getDouble("preco"));
         prod.setQuantidade(result.getInt("quantidade"));
         prod.setDataValidade(result.getDate("validade"));
+        prod.setImagem(result.getString("imagem"));
         return prod;
     }
 
-    public static Produto getProdutoByRequest(HttpServletRequest req) {
+    public static Produto getProdutoByRequest(HttpServletRequest req) throws FileUploadException, IOException {
+        Map<String, Object> parametters = ServletUtil.recuperaParametrosMultipart(req);
+        System.out.println(parametters);
+
+        String id = (String) parametters.get("produto-id");
+        String nome = (String) parametters.get("produto-nome");
+        String descricao = (String) parametters.get("produto-descricao");
+        String preco = (String) parametters.get("produto-preco");
+        String quantidade = (String) parametters.get("produto-quantidade");
+        String validade = (String) parametters.get("produto-validade");
+        Arquivo arquivoImagem = (Arquivo) parametters.get("produto-imagem");
+
+        String imagemCaminho = null;
+        if (arquivoImagem != null && arquivoImagem.temConteudo()) {
+            imagemCaminho = ServletUtil.gravarArquivo(arquivoImagem);
+        }
+
         Produto produto = new Produto();
-        produto.setId(Formatter.stringParaLong(req.getParameter("produto-id")));
-        produto.setNome(req.getParameter("produto-nome"));
-        produto.setDescricao(req.getParameter("produto-descricao"));
-        produto.setPreco(Formatter.stringParaDouble(req.getParameter("produto-preco")));
-        produto.setQuantidade(Formatter.stringParaInt(req.getParameter("produto-quantidade")));
-        produto.setDataValidade(Formatter.stringParaData(req.getParameter("produto-validade")));
+        produto.setId(Formatter.stringParaLong(id));
+        produto.setNome(nome);
+        produto.setDescricao(descricao);
+        produto.setPreco(Formatter.stringParaDouble(preco));
+        produto.setQuantidade(Formatter.stringParaInt(quantidade));
+        produto.setDataValidade(Formatter.stringParaData(validade));
+        produto.setImagem(imagemCaminho);
         return produto;
     }
 

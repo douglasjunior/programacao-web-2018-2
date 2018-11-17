@@ -31,13 +31,22 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js" ></script>
         <script src="/gerenciador/js/validations.js" ></script>
+        
+        <style>
+            .produto-imagem {
+                max-height: 100px;
+                max-width: 100px;
+            }
+        </style>
 
         <script>
             function validaCadastro(event) {
+                var idInput = document['form-produto']['produto-id'];
                 var nomeInput = document['form-produto']['produto-nome'];
                 var precoInput = document['form-produto']['produto-preco'];
                 var quantidadeInput = document['form-produto']['produto-quantidade'];
                 var validadeInput = document['form-produto']['produto-validade'];
+                var imagemInput = document['form-produto']['produto-imagem'];
 
                 var formValido = true;
 
@@ -79,6 +88,15 @@
                     validadeInput.classList.add('is-valid');
                 }
 
+                if (idInput.value === '0' && !imagemInput.value) {
+                    formValido = false;
+                    imagemInput.classList.add('is-invalid');
+                    imagemInput.classList.remove('is-valid');
+                } else {
+                    imagemInput.classList.remove('is-invalid');
+                    imagemInput.classList.add('is-valid');
+                }
+
                 return formValido;
             }
 
@@ -107,7 +125,9 @@
                     }
                 %>
 
-                <form name="form-produto" method="POST" onsubmit="return validaCadastro();">
+                <form name="form-produto" enctype="multipart/form-data" accept-charset="utf-8"
+                      method="POST" onsubmit="return validaCadastro();">
+
                     <input type="hidden"
                            name="produto-id"
                            value="<%= produto.getId()%>" />
@@ -158,6 +178,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="produto-imagem">Imagem</label>
+                            <input type="file" class="form-control" id="produto-imagem" 
+                                   name="produto-imagem"
+                                   value="<%= produto.getImagem()%>"
+                                   accept="image/png,image/jpg,image/jpeg"/>
+                            <div class="invalid-feedback">
+                                Informe um arquivo de imagem PNG ou JPG.                            
+                            </div>
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>
             </section>
@@ -197,7 +229,11 @@
                     %>
                     <tr>
                         <td><%= p.getId()%></td>
-                        <td><%= p.getNome()%></td>
+                        <td>
+                            <img src="imagem?caminho=<%= p.getImagem()%>" class="produto-imagem" />
+                            <br />
+                            <%= p.getNome()%>
+                        </td>
                         <td><%= p.getDescricao()%></td>
                         <td><%= p.getQuantidade()%></td>
                         <td><%= p.getPreco()%></td>

@@ -17,24 +17,18 @@ public class Validations {
         return valor != null && valor.length() >= minimo;
     }
 
-    public static boolean validaDouble(String valor, double minimo, double maximo) {
-        double valorNumerico = Formatter.stringParaDouble(valor);
-
-        return valorNumerico >= minimo && valorNumerico <= maximo;
+    public static boolean validaDouble(double valor, double minimo, double maximo) {
+        return valor >= minimo && valor <= maximo;
     }
 
-    public static boolean validaLong(String valor, long minimo, long maximo) {
-        long valorNumero = Formatter.stringParaLong(valor);
-
-        return valorNumero >= minimo && valorNumero <= maximo;
+    public static boolean validaLong(long valor, long minimo, long maximo) {
+        return valor >= minimo && valor <= maximo;
     }
 
-    public static boolean validaData(String data, Date minimo, Date maximo) {
-        Date dataDate = Formatter.stringParaData(data);
-
-        return dataDate != null
-                && (dataDate.after(minimo) || dataDate.equals(minimo))
-                && (dataDate.before(maximo) || dataDate.equals(maximo));
+    public static boolean validaData(Date data, Date minimo, Date maximo) {
+        return data != null
+                && (data.after(minimo) || data.equals(minimo))
+                && (data.before(maximo) || data.equals(maximo));
     }
 
 }
