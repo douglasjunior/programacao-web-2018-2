@@ -5,6 +5,16 @@ import java.util.Date;
 
 public class Produto {
 
+    /*
+    CREATE TABLE `produtos` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `nome` VARCHAR(50) NOT NULL,
+    `descricao` VARCHAR(255) NULL,
+    `preco` DECIMAL(10,2) NOT NULL DEFAULT 0,
+    `quantidade` INT NOT NULL DEFAULT 0,
+    `validade` DATE NOT NULL,
+    PRIMARY KEY (`id`));
+     */
     private long id;
     private String nome;
     private String descricao;

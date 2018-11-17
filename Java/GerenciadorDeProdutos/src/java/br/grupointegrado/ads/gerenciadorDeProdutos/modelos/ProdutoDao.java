@@ -1,74 +1,124 @@
 package br.grupointegrado.ads.gerenciadorDeProdutos.modelos;
 
 import br.grupointegrado.ads.gerenciadorDeProdutos.utils.Formatter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 public class ProdutoDao {
 
-    private static List<Produto> produtos = new ArrayList<>();
-    private static long sequenciaIds = 1;
+    private final Connection conexao;
 
-//    static {
-//        for (int i = 0; i < 10; i++) {
-//            Produto p = new Produto();
-//            p.setId(sequenciaIds++);
-//            p.setNome("produto " + i);
-//            p.setDescricao("produto descrição " + i);
-//            p.setPreco(10.5 * i);
-//            p.setQuantidade(8 * i);
-//            p.setDataValidade(new Date());
-//            produtos.add(p);
-//        }
-//    }
-
-    public ProdutoDao() {
+    public ProdutoDao(Connection conexao) {
+        this.conexao = conexao;
     }
 
-    public void inserir(Produto produto) {
+    public void inserir(Produto produto) throws SQLException {
         // SQL: INSERT INTO PRODUTOS ...
-        produto.setId(sequenciaIds++);
-        produtos.add(produto);
+
+        String sql = "INSERT INTO produtos "
+                + " (nome, descricao, preco, quantidade, validade) "
+                + " VALUES (?, ?, ?, ?, ?) ";
+
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setString(1, produto.getNome());
+        statement.setString(2, produto.getDescricao());
+        statement.setDouble(3, produto.getPreco());
+        statement.setInt(4, produto.getQuantidade());
+
+        long timeValidade = produto.getDataValidade().getTime();
+        statement.setDate(5, new java.sql.Date(timeValidade));
+
+        statement.execute();
     }
 
-    public Produto buscaPorId(long id) {
+    public Produto buscaPorId(long id) throws SQLException {
         // SQL: SELECT * FROM PRODUTOS
-        for (Produto produto : produtos) {
-            if (produto.getId() == id) {
-                return produto;
-            }
+        String sql = "SELECT * FROM produtos "
+                + " WHERE id = ? ";
+
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setLong(1, id);
+
+        ResultSet result = statement.executeQuery();
+        if (result.first()) {
+            Produto prod = getProdutoByResultSet(result);
+            return prod;
         }
+
         return null;
     }
 
-    public void remover(long id) {
+    public void remover(long id) throws SQLException {
         // SQL: DELETE FROM PRODUTOS ...
-        Produto produto = buscaPorId(id);
-        if (produto != null) {
-            produtos.remove(produto);
-        }
+        String sql = "DELETE FROM produtos WHERE id = ? ";
+
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setLong(1, id);
+
+        statement.execute();
     }
 
-    public void atualizar(Produto produtoAtualizado) {
+    public void atualizar(Produto produto) throws SQLException {
         // SQL: UPDATE PRODUTOS ...
-        remover(produtoAtualizado.getId());
-        produtos.add(produtoAtualizado);
+        String sql = "UPDATE produtos SET "
+                + " nome = ?, descricao = ?, preco = ?, quantidade = ?, validade = ? "
+                + " WHERE id = ? ";
+
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setString(1, produto.getNome());
+        statement.setString(2, produto.getDescricao());
+        statement.setDouble(3, produto.getPreco());
+        statement.setInt(4, produto.getQuantidade());
+
+        long timeValidade = produto.getDataValidade().getTime();
+        statement.setDate(5, new java.sql.Date(timeValidade));
+
+        statement.setLong(6, produto.getId());
+
+        statement.execute();
     }
 
-    public List<Produto> buscaTodos(String termoBusca) {
-        // SQL: SELECT * FROM PRODUTOS ...
-        if (termoBusca == null || termoBusca.isEmpty()) {
-            return produtos;
+    public List<Produto> buscaTodos(String termoBusca) throws SQLException {
+        String parametroBusca = "%%";
+        if (termoBusca != null) {
+            parametroBusca = "%" + termoBusca + "%";
         }
-        List<Produto> produtosEncontrados = new ArrayList<>();
-        for (Produto produto : produtos) {
-            if (produto.getNome().contains(termoBusca)
-                    || produto.getDescricao().contains(termoBusca)) {
-                produtosEncontrados.add(produto);
-            }
+
+        String sql = "SELECT * FROM produtos    "
+                + " WHERE nome LIKE ?           "
+                + "    OR descricao LIKE ?      ";
+
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setString(1, parametroBusca);
+        statement.setString(2, parametroBusca);
+
+        List<Produto> produtos = new ArrayList<>();
+
+        ResultSet result = statement.executeQuery();
+        if (result.first()) {
+            do {
+                Produto prod = getProdutoByResultSet(result);
+                produtos.add(prod);
+            } while (result.next());
         }
-        return produtosEncontrados;
+
+        return produtos;
+    }
+
+    public static Produto getProdutoByResultSet(ResultSet result) throws SQLException {
+        Produto prod = new Produto();
+        prod.setId(result.getLong("id"));
+        prod.setNome(result.getString("nome"));
+        prod.setDescricao(result.getString("descricao"));
+        prod.setPreco(result.getDouble("preco"));
+        prod.setQuantidade(result.getInt("quantidade"));
+        prod.setDataValidade(result.getDate("validade"));
+        return prod;
     }
 
     public static Produto getProdutoByRequest(HttpServletRequest req) {

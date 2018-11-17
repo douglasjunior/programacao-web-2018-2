@@ -5,6 +5,8 @@ import br.grupointegrado.ads.gerenciadorDeProdutos.modelos.ProdutoDao;
 import br.grupointegrado.ads.gerenciadorDeProdutos.utils.Formatter;
 import br.grupointegrado.ads.gerenciadorDeProdutos.utils.Validations;
 import java.io.IOException;
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -24,26 +26,41 @@ public class ProdutoServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProdutoDao dao = new ProdutoDao();
+        Connection conexao = (Connection) req.getAttribute("conexao");
+
+        ProdutoDao dao = new ProdutoDao(conexao);
 
         long produtoId = Formatter.stringParaLong(req.getParameter("produto"));
         long excluirProdutoId
                 = Formatter.stringParaLong(req.getParameter("excluirProduto"));
 
         if (excluirProdutoId > 0) {
-            // excluir o produto do banco de dados.
-            dao.remover(excluirProdutoId);
-            resp.sendRedirect("/gerenciador/produtos");
+            try {
+                // excluir o produto do banco de dados.
+                dao.remover(excluirProdutoId);
+                resp.sendRedirect("/gerenciador/produtos");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                req.setAttribute("mensagem-erro", "Não foi possível excluir o produto.");
+
+                listarProdutos(req, resp);
+            }
         } else {
             // Verifica se o ID do produto foi informado na URL
             if (produtoId > 0) {
-                Produto produtoEncontrado = dao.buscaPorId(produtoId);
-                if (produtoEncontrado != null) {
-                    // Se o produto existe, então devolve o produto para a JSP
-                    req.setAttribute("produto", produtoEncontrado);
-                } else {
-                    // Se não, exibe uma mensagem de erro
-                    req.setAttribute("mensagem-erro", "Produto não encontrado.");
+                Produto produtoEncontrado = null;
+                try {
+                    produtoEncontrado = dao.buscaPorId(produtoId);
+                    if (produtoEncontrado != null) {
+                        // Se o produto existe, então devolve o produto para a JSP
+                        req.setAttribute("produto", produtoEncontrado);
+                    } else {
+                        // Se não, exibe uma mensagem de erro
+                        req.setAttribute("mensagem-erro", "Produto não encontrado.");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    req.setAttribute("mensagem-erro", "Náo foi possível buscar o produto.");
                 }
             }
             listarProdutos(req, resp);
@@ -58,11 +75,19 @@ public class ProdutoServlet extends HttpServlet {
          * JSP. <br />
          * 3. Encaminhar a requisição para a página JSP apresentar o "response".
          */
-        ProdutoDao dao = new ProdutoDao();
+        Connection conexao = (Connection) req.getAttribute("conexao");
+
+        ProdutoDao dao = new ProdutoDao(conexao);
 
         String buscaProduto = req.getParameter("buscar-produto");
 
-        List<Produto> produtos = dao.buscaTodos(buscaProduto);
+        List<Produto> produtos = new ArrayList<>();
+        try {
+            produtos = dao.buscaTodos(buscaProduto);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            req.setAttribute("mensagem-erro", "Não foi possível comunicar com o banco de dados.");
+        }
 
         req.setAttribute("produtos", produtos);
 
@@ -83,18 +108,26 @@ public class ProdutoServlet extends HttpServlet {
         Produto produto = ProdutoDao.getProdutoByRequest(req);
 
         if (mensagemErro == null) {
+            Connection conexao = (Connection) req.getAttribute("conexao");
             // Os dados do produto são válidos
-            ProdutoDao dao = new ProdutoDao();
+            ProdutoDao dao = new ProdutoDao(conexao);
 
-            if (produto.getId() > 0) {
-                // Se o produto já possui ID, então deve atualizar
-                dao.atualizar(produto);
-            } else {
-                // Se não, inserir novo produto
-                dao.inserir(produto);
+            try {
+                if (produto.getId() > 0) {
+                    // Se o produto já possui ID, então deve atualizar
+                    dao.atualizar(produto);
+                } else {
+                    // Se não, inserir novo produto
+                    dao.inserir(produto);
+                }
+                resp.sendRedirect("/gerenciador/produtos");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                req.setAttribute("mensagem-erro", "Não foi possível salvar o produto.");
+                req.setAttribute("produto", produto);
+
+                listarProdutos(req, resp);
             }
-
-            resp.sendRedirect("/gerenciador/produtos");
         } else {
             // Os dados do produto são inválidos
             req.setAttribute("mensagem-erro", mensagemErro);
